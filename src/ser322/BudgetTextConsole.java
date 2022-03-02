@@ -2,6 +2,10 @@ package ser322;
 
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -11,6 +15,11 @@ import java.util.Scanner;
  **/
 public class BudgetTextConsole {
     private Scanner scanner;
+    private SQLEngine db;
+
+    public BudgetTextConsole(SQLEngine db) {
+        this.db = db;
+    }
 
     /**
      * displays the main menu for actions users will do
@@ -55,7 +64,7 @@ public class BudgetTextConsole {
      * on what is selected in the menu
      * @return string array of the values
      */
-    public String[] askValues(String[] inputs) {
+    public String[] askValues(String[] inputs) throws SQLException {
         if (inputs[0].equals(dbProp.INSERT))
             askInsertValues(inputs[1]);
 
@@ -68,8 +77,16 @@ public class BudgetTextConsole {
      * gets the values that should be inserted
      * @param table
      */
-    private void askInsertValues(String table) {
-        // should get metadata from particular table and ask each column what they would like to insert
+    private List<String> askInsertValues(String table) throws SQLException {
+        ResultSetMetaData meta = db.getRsMeta(table);
+        List<String> dataList = new LinkedList<>();
+        for (int i = 0; i < meta.getColumnCount(); i++) {
+            System.out.print("What is the " + meta.getColumnLabel(i) + "?\n" +
+                    ">>");
+            String data = scanner.nextLine();
+            dataList.add(data);
+        }
+        return dataList;
     }
 
 

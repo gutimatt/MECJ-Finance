@@ -23,14 +23,18 @@ public class SQLEngine {
      * Connects to the database
      */
     public void connect() throws Exception{
-        if (args.length < 4) {
-            throw new IllegalArgumentException("USAGE: java ser322.BudgetEngine <url> <user> <passwd> <driver>");
-        }
+//        if (args.length < 4) {
+//            throw new IllegalArgumentException("USAGE: java ser322.BudgetEngine <url> <user> <passwd> <driver>");
+//        }
 
-        String _url = args[0];
-        String username = args[1];
-        String password = args[2];
-        String driver = args[3];
+        String _url = "jdbc:mysql://localhost:3306/mecj_finance?autoreconnect=true&useSSL=false";
+//                args[0];
+        String username = "root";
+//                args[1];
+        String password = "mysqlroot24pass";
+//            args[2];
+        String driver = "com.mysql.cj.jdbc.Driver";
+//            args[3];
 
         Class.forName(driver);
 
@@ -60,12 +64,19 @@ public class SQLEngine {
         }
     }
 
+    public ResultSetMetaData getRsMeta(String table) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("select * from " + table);
+        return rs.getMetaData();
+    }
+
     //todo: Matthew working on
     /**
      * inserts into the database.  Is generic by getting metadata
      */
-    public ResultSet insert(String table, String[] values) {
-        //todo: return actual value
+    public ResultSet insert(String table, String[] values) throws SQLException {
+        ResultSetMetaData meta = getRsMeta(table);
+        //todo: insert into db
         return null;
     }
 
@@ -95,7 +106,7 @@ public class SQLEngine {
      * @param inputs takes in action, table
      * @param values takes in the values needed
      */
-    public ResultSet execute(String[] inputs, String[] values) {
+    public ResultSet execute(String[] inputs, String[] values) throws SQLException {
         if (inputs[0].equals(dbProp.INSERT))
             return insert(inputs[1], values);
         //todo: return actual value

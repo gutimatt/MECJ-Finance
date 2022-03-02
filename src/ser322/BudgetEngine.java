@@ -14,7 +14,7 @@ public class BudgetEngine {
 
     private void run(String[] args) {
         SQLEngine db = new SQLEngine(args);
-        BudgetTextConsole console = new BudgetTextConsole();
+        BudgetTextConsole console = new BudgetTextConsole(db);
 
         try {
             db.connect();
