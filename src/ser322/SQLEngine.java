@@ -70,7 +70,6 @@ public class SQLEngine {
         return rs.getMetaData();
     }
 
-    //todo: Matthew working on
     /**
      * inserts into the database.  Is generic by getting metadata
      */
@@ -106,20 +105,35 @@ public class SQLEngine {
         }
 
         prepStmt.executeUpdate();
+        conn.commit();
+        scanner.close();
     }
 
-    //todo: write function
-    public ResultSet update() {
-        //todo: return actual value
-        return null;
-
+    public void update() throws SQLException {
+        String depositStmt = "UPDATE EXPENSE SET Description = 'Gas' WHERE Title = 'Shell'";
+        stmt.executeUpdate(depositStmt);
     }
 
-    //todo: write function
-    public ResultSet select() {
-        //todo: return actual value
-        return null;
-
+    public void select() throws SQLException {
+        stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT Title FROM BILL b, EXPENSE e WHERE Duedate = '2022-01-01 12:00:00'AND b.Userid=e.Userid");
+        while(rs.next()){
+            System.out.print(rs.getString(1) + "\t");
+        }
+        rs = stmt.executeQuery("SELECT Totalamount, Currentamount, Description FROM GOAL g, EXPENSE e WHERE Category = 1 AND g.UserId = e.UserId");
+        while(rs.next()){
+            System.out.print(rs.getInt(1) + "\t");
+            System.out.print(rs.getInt(2) + "\t");
+        }
+        rs = stmt.executeQuery("SELECT Description FROM EXPENSE WHERE Title = 'Shell' OR Title = 'Grocery Store'");
+        while(rs.next()){
+            System.out.print(rs.getInt(1) + "\t");
+            System.out.print(rs.getInt(2) + "\t");
+        }
+        rs = stmt.executeQuery("SELECT Description FROM EXPENSE WHERE Amount BETWEEN 100 AND 200");
+        while(rs.next()){
+            System.out.print(rs.getString(1) + "\t");
+        }
     }
 
     /**
@@ -128,7 +142,7 @@ public class SQLEngine {
      * @param table String the table to delete the row from
      * @param id String the ID of the row to delete
      */
-    public void delete(String table, String id) {
+    public void delete(String table, String id) throws SQLException{
         String s = null;
         String attribute = null;
 
@@ -158,34 +172,9 @@ public class SQLEngine {
 
         s = "DELETE FROM " + table.toUpperCase() + " WHERE " + attribute + " = ?";
 
-        try {
-            prepStmt = conn.prepareStatement(s);
-            prepStmt.setString(1, id);
-            prepStmt.executeUpdate();
-            conn.commit();
-        } catch (Exception exc){
-            exc.printStackTrace();
-        }
-        finally {
-            try {
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
-        }
-    }
-
-    //todo: implement function - insert has example for execute
-    /**
-     * filters and executes the correct sql script
-     * @param inputs takes in action, table
-     * @param values takes in the values needed
-     */
-    public ResultSet execute(String[] inputs, String[] values) throws SQLException {
-        if (inputs[0].equals(dbProp.INSERT))
-            insert(inputs[1]);
-        //todo: return actual value
-        return null;
+        prepStmt = conn.prepareStatement(s);
+        prepStmt.setString(1, id);
+        prepStmt.executeUpdate();
+        conn.commit();
     }
 }

@@ -2,10 +2,7 @@ package ser322;
 
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -56,24 +53,26 @@ public class BudgetTextConsole {
 
         return new String[]{action, table};
     }
-
-    //todo: write function - similar to menu.  Can call different functions to ask appropriate questions and
-    // values.  askInsertValues is an example
     /**
      * Should ask the values that the user wants to insert, update, delete, select for table depending
      * on what is selected in the menu
      * @return string array of the values
      */
-    public String[] askValues(String[] inputs) throws SQLException {
-        if (inputs[0].equals(dbProp.INSERT))
+    public void askValues(String[] inputs) throws SQLException {
+        if (inputs[0].equals(dbProp.INSERT)) {
             db.insert(inputs[1]);
-
-        if (inputs[0].equals(dbProp.DELETE))
+        }
+        else if (inputs[0].equals(dbProp.DELETE)) {
             System.out.println("Enter id to delete from " + inputs[1]);
             String id = scanner.nextLine();
             db.delete(inputs[1], id);
-        //todo: return actual value
-        return new String[0];
+        }
+        else if (inputs[0].equals(dbProp.SELECT)) {
+            db.select();
+        }
+        else if(inputs[0].equals(dbProp.UPDATE)) {
+            db.update();
+        }
     }
 
 

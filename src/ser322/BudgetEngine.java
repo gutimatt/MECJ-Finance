@@ -1,7 +1,5 @@
 package ser322;
 
-import java.sql.ResultSet;
-
 /**
  * Entry point for application.  Controller between database and ui
  * @author : Matthew Gutierrez
@@ -24,9 +22,7 @@ public class BudgetEngine {
                 String[] inputs = console.displayMainMenu();
                 if (inputs[0].equals("quit"))
                     break;
-                String[] values = console.askValues(inputs);
-                ResultSet rs = db.execute(inputs, values);
-                console.printResult(inputs, rs);
+                console.askValues(inputs);
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
