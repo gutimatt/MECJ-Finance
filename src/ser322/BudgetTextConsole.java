@@ -68,6 +68,10 @@ public class BudgetTextConsole {
         if (inputs[0].equals(dbProp.INSERT))
             db.insert(inputs[1]);
 
+        if (inputs[0].equals(dbProp.DELETE))
+            System.out.println("Enter id to delete from " + inputs[1]);
+            String id = scanner.nextLine();
+            db.delete(inputs[1], id);
         //todo: return actual value
         return new String[0];
     }
