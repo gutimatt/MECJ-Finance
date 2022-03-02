@@ -122,10 +122,58 @@ public class SQLEngine {
 
     }
 
-    //todo: write function
-    public ResultSet delete() {
-        //todo: return actual value
-        return null;
+    /**
+     * Delete a row from a table using the appropriate table ID for the row
+     *
+     * @param table String the table to delete the row from
+     * @param id String the ID of the row to delete
+     */
+    public void delete(String table, String id) {
+        String s = null;
+        String attribute = null;
+
+        switch (table) {
+            case "user":
+                attribute = "Userid";
+                break;
+            case "transaction":
+                attribute = "Transactionid";
+                break;
+            case "bill":
+                attribute = "Billid";
+                break;
+            case "expense":
+                attribute = "Expenseid";
+                break;
+            case "budget":
+                attribute = "BudgetId";
+                break;
+            case "goal":
+                attribute = "Goalid";
+                break;
+            case "category":
+                attribute = "Categoryid";
+                break;
+        }
+
+        s = "DELETE FROM " + table.toUpperCase() + " WHERE " + attribute + " = ?";
+
+        try {
+            prepStmt = conn.prepareStatement(s);
+            prepStmt.setString(1, id);
+            prepStmt.executeUpdate();
+            conn.commit();
+        } catch (Exception exc){
+            exc.printStackTrace();
+        }
+        finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
     }
 
     //todo: implement function - insert has example for execute
