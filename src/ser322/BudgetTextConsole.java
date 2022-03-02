@@ -66,27 +66,10 @@ public class BudgetTextConsole {
      */
     public String[] askValues(String[] inputs) throws SQLException {
         if (inputs[0].equals(dbProp.INSERT))
-            askInsertValues(inputs[1]);
+            db.insert(inputs[1]);
 
         //todo: return actual value
         return new String[0];
-    }
-
-    //todo: implement function
-    /**
-     * gets the values that should be inserted
-     * @param table
-     */
-    private List<String> askInsertValues(String table) throws SQLException {
-        ResultSetMetaData meta = db.getRsMeta(table);
-        List<String> dataList = new LinkedList<>();
-        for (int i = 0; i < meta.getColumnCount(); i++) {
-            System.out.print("What is the " + meta.getColumnLabel(i) + "?\n" +
-                    ">>");
-            String data = scanner.nextLine();
-            dataList.add(data);
-        }
-        return dataList;
     }
 
 

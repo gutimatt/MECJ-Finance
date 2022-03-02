@@ -1,6 +1,10 @@
 package ser322;
 
+import java.io.InputStreamReader;
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * Responsible for connecting to database and executing queries
@@ -74,10 +78,39 @@ public class SQLEngine {
     /**
      * inserts into the database.  Is generic by getting metadata
      */
-    public ResultSet insert(String table, String[] values) throws SQLException {
+    public void insert(String table) throws SQLException {
+        Scanner scanner = new Scanner(new InputStreamReader(System.in));
         ResultSetMetaData meta = getRsMeta(table);
-        //todo: insert into db
-        return null;
+
+        String s = "";
+        s += "Insert into ? (";
+
+        List<String> dataList = new LinkedList<>();
+        for (int i = 1; i <= meta.getColumnCount(); i++) {
+            System.out.print("What is the " + meta.getColumnLabel(i) + "?\n" +
+                    ">>");
+            dataList.add(scanner.nextLine());
+            if (i < meta.getColumnCount())
+                s += meta.getColumnLabel(i) + ", ";
+            else s += meta.getColumnLabel(i) + ") ";
+        }
+
+        s += "values (";
+
+        for (int i = 1; i <= meta.getColumnCount(); i++) {
+            if (i < meta.getColumnCount())
+                s += "?, ";
+            else s += "?);";
+        }
+
+        prepStmt = conn.prepareStatement(s);
+        prepStmt.setString(1, table);
+
+        for (int i = 1; i <= meta.getColumnCount(); i++) {
+            prepStmt.setObject(i+1, dataList.get(i-1));
+        }
+
+        prepStmt.executeUpdate();
     }
 
     //todo: write function
@@ -108,7 +141,7 @@ public class SQLEngine {
      */
     public ResultSet execute(String[] inputs, String[] values) throws SQLException {
         if (inputs[0].equals(dbProp.INSERT))
-            return insert(inputs[1], values);
+            insert(inputs[1]);
         //todo: return actual value
         return null;
     }
