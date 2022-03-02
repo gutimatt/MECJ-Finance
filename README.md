@@ -9,7 +9,7 @@
 
 2. Compile the project:
 ```
-
+javac -d classes -cp classes src/ser322/*.java
 ```
 
 3. Run the program:
