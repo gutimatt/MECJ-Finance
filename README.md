@@ -1,5 +1,8 @@
 # MECJ Finance
 
+## Video
+https://youtu.be/oUD4TUd-4wE
+
 ## 1. Database
 1. Create a new database using MySQL Workbench.
 2. Run `SQLScripts/MECJ-Finance_6_create.sql` and `SQLScripts/MECJ-Finance_6_insert.sql` on your new database.
