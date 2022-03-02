@@ -27,18 +27,14 @@ public class SQLEngine {
      * Connects to the database
      */
     public void connect() throws Exception{
-//        if (args.length < 4) {
-//            throw new IllegalArgumentException("USAGE: java ser322.BudgetEngine <url> <user> <passwd> <driver>");
-//        }
+        if (args.length < 4) {
+            throw new IllegalArgumentException("USAGE: java ser322.BudgetEngine <url> <user> <passwd> <driver>");
+        }
 
-        String _url = "jdbc:mysql://localhost:3306/mecj_finance?autoreconnect=true&useSSL=false";
-//                args[0];
-        String username = "root";
-//                args[1];
-        String password = "mysqlroot24pass";
-//            args[2];
-        String driver = "com.mysql.cj.jdbc.Driver";
-//            args[3];
+        String _url = args[0];
+        String username = args[1];
+        String password = args[2];
+        String driver = args[3];
 
         Class.forName(driver);
 
