@@ -82,8 +82,7 @@ public class SQLEngine {
         Scanner scanner = new Scanner(new InputStreamReader(System.in));
         ResultSetMetaData meta = getRsMeta(table);
 
-        String s = "";
-        s += "Insert into ? (";
+        String s = "INSERT INTO ? (";
 
         List<String> dataList = new LinkedList<>();
         for (int i = 1; i <= meta.getColumnCount(); i++) {
@@ -95,7 +94,7 @@ public class SQLEngine {
             else s += meta.getColumnLabel(i) + ") ";
         }
 
-        s += "values (";
+        s += "VALUES (";
 
         for (int i = 1; i <= meta.getColumnCount(); i++) {
             if (i < meta.getColumnCount())
@@ -107,7 +106,7 @@ public class SQLEngine {
         prepStmt.setString(1, table);
 
         for (int i = 1; i <= meta.getColumnCount(); i++) {
-            prepStmt.setObject(i+1, dataList.get(i-1));
+            prepStmt.setObject(i+1, dataList.get(i-1), meta.getColumnType(i));
         }
 
         prepStmt.executeUpdate();
